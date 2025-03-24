@@ -14,6 +14,14 @@ include_directories(include)
 
 add_library(glad glad.c)
 
-add_executable(PingPong main.cpp)
+add_executable(PingPong
+    main.cpp
+    shader.cpp
+)
 
-target_link_libraries(PingPong PRIVATE glad "${GL_LIB}" "${GLFW_LIB}")
+target_link_libraries(PingPong
+    PRIVATE
+    glad
+    "${GL_LIB}"
+    "${GLFW_LIB}"
+)
