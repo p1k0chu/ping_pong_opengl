@@ -9,10 +9,8 @@ class Shader {
 
     uint getShaderProgram();
     void use();
-    void setColor(const float &red, const float &green, const float &blue, const float &alpha);
   private:
     uint shaderProgram;
-    int colorUniform;
 };
 
 uint initShaderProgram();

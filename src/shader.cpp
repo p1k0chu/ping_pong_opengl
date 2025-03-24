@@ -7,17 +7,10 @@
 
 Shader::Shader(): shaderProgram(initShaderProgram()) {
     makeSureShaderCompiled(shaderProgram);
-
-    colorUniform = glGetUniformLocation(shaderProgram, "color");
-    assert(colorUniform != -1);
 }
 
 Shader::~Shader() {
     glDeleteProgram(shaderProgram);
-}
-
-void Shader::setColor(const float &red, const float &green, const float &blue, const float &alpha) {
-    glUniform4f(colorUniform, red, green, blue, alpha);
 }
 
 void Shader::use() {
@@ -32,14 +25,14 @@ uint Shader::getShaderProgram() {
 const char *vertexShaderSource =
     "#version 460 core\n"
     "layout (location = 0) in vec3 aPos;\n"
-    "layout (location = 1) in vec4 aColor;\n"
+    "layout (location = 1) in vec3 aColor;\n"
 
     "out vec4 color;\n"
 
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "   color = aColor;"
+    "   color = vec4(aColor.x, aColor.y, aColor.z, 1.0);\n"
     "}";
 
 const char *fragmentShaderSource =
@@ -49,7 +42,7 @@ const char *fragmentShaderSource =
 
     "void main()\n"
     "{\n"
-    "    FragColor = color\n"
+    "    FragColor = color;\n"
     "}";
 
 /// panics if compilation failed
@@ -57,7 +50,15 @@ void makeSureShaderCompiled(const uint &shader) {
     int success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success) {
-        std::cerr << "Failed to compile shader" << std::endl;
+        int len;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
+
+        char *log = new char[len];
+        glGetShaderInfoLog(shader, len, NULL, log);
+
+        std::cerr << "Failed to compile shader: " << log << std::endl;
+
+        delete[] log;
         panic();
     }
 }
@@ -84,7 +85,15 @@ uint initShaderProgram() {
         int success;
         glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
         if (!success) {
-            std::cerr << "Failed to link the shader program!" << std::endl;
+            int len;
+            glGetProgramiv(shaderProgram, GL_INFO_LOG_LENGTH, &len);
+
+            char *log = new char[len];
+            glGetProgramInfoLog(shaderProgram, len, NULL, log);
+
+            std::cerr << "Failed to link the shader program: " << log << std::endl;
+
+            delete[] log;
             panic();
         }
     }
