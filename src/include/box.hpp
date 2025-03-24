@@ -12,6 +12,7 @@ class Box {
         float color[3];
 
         void render();
+        void putInBounds();
     private:
 
         uint vbo, vao, ebo;

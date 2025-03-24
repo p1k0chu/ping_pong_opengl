@@ -34,6 +34,23 @@ void Box::render() {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
+#define EDGE_MARGIN_Y 0.02f
+#define EDGE_MARGIN_X 0.01f
+
+void Box::putInBounds() {
+    if (this->y < height / 2.0f - 1.0f + EDGE_MARGIN_Y) {
+        this->y = height / 2.0f - 1.0f + EDGE_MARGIN_Y;
+    } else if (this->y > 1.0f - height / 2.0f - EDGE_MARGIN_Y) {
+        this->y = 1.0f - height / 2.0f - EDGE_MARGIN_Y;
+    }
+
+    if (this->x < width / 2.0f - 1.0f + EDGE_MARGIN_X) {
+        this->x = width / 2.0f - 1.0f + EDGE_MARGIN_X;
+    } else if (this->x > 1.0f - width / 2.0f - EDGE_MARGIN_X) {
+        this->x = 1.0f - width / 2.0f - EDGE_MARGIN_X;
+    }
+}
+
 void Box::fillVBO() {
     // bind vao
     glBindVertexArray(vao);
