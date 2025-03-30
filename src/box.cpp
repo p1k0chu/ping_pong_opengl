@@ -5,7 +5,6 @@ Box::Box(float x, float y, float z, float width, float height, float red,
          float green, float blue)
     : x(x), y(y), z(z), width(width), height(height), color{red, green, blue} {
 
-    // create vbo ebo and vao
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
     glGenBuffers(1, &ebo);
@@ -32,6 +31,7 @@ void Box::render() {
 
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }
 
 #define EDGE_MARGIN_Y 0.02f
@@ -52,7 +52,6 @@ void Box::putInBounds() {
 }
 
 void Box::fillVBO() {
-    // bind vao
     glBindVertexArray(vao);
 
     float vertices[] = {
@@ -66,25 +65,21 @@ void Box::fillVBO() {
         color[2] // bottom left
     };
 
-    // bind and fill vbo
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
 }
 
 void Box::fillEBO() {
-    // bind vao
     glBindVertexArray(vao);
 
     unsigned int indices[] = {
         0, 1, 2, 2, 3, 0,
     };
 
-    // bind and fill ebo
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                  GL_DYNAMIC_DRAW);
 
-    // set vertex attributes
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                           (void *)0);
     glEnableVertexAttribArray(0);

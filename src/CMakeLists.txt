@@ -16,6 +16,7 @@ add_library(glad glad.c)
 
 add_executable(PingPong
     main.cpp
+    ball.cpp
     box.cpp
     shader.cpp
     game.cpp

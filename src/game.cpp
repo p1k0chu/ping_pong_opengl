@@ -1,4 +1,5 @@
 #include "glad/glad.h"
+#include <GL/gl.h>
 #include <GLFW/glfw3.h>
 #include <chrono>
 #include <thread>
@@ -10,7 +11,8 @@
 Game::Game(GLFWwindow *window)
     : defaultBackground{0.0f, 0.0f, 0.0f}, window(window),
       player1(Box(-1.0f, 0.0f, 0.0f, 0.07f, 0.4f)),
-      player2(Box(1.0f, 0.0f, 0.0f, 0.07f, 0.4f)) {
+      player2(Box(1.0f, 0.0f, 0.0f, 0.07f, 0.4f)),
+      ball(Ball(0.0f, 0.0f, 0.0f, 0.04f, 16)) {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }
@@ -44,6 +46,7 @@ void Game::tick(float dt) {
     this->clear();
     this->player1.render();
     this->player2.render();
+    this->ball.render();
 
     glfwSwapBuffers(this->window);
     glfwPollEvents();
@@ -70,5 +73,6 @@ void Game::clear() {
 }
 
 void framebuffer_size_callback(GLFWwindow *, int width, int height) {
-    glViewport(0, 0, width, height);
+    int size = std::min(width, height);
+    glViewport(0, 0, size, size);
 }

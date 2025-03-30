@@ -5,6 +5,7 @@
 #include <sys/types.h>
 
 #include "box.hpp"
+#include "ball.hpp"
 
 class Game {
   public:
@@ -27,6 +28,7 @@ class Game {
 
     Box player1;
     Box player2;
+    Ball ball;
 };
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
