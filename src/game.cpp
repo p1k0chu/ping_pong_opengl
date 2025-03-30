@@ -40,6 +40,8 @@ void Game::tick(float dt) {
     this->processInput(dt);
     this->player1.putInBounds();
     this->player2.putInBounds();
+    this->ball.tick(dt);
+    this->ball.putInBounds();
 
     this->shader.use();
 

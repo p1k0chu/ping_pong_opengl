@@ -1,13 +1,16 @@
 #include "ball.hpp"
 #include "glad/glad.h"
 #include <cmath>
+#include <cstdlib>
 #include <numbers>
 #include <sys/types.h>
+
+#define SPEED 0.5f
 
 Ball::Ball(float x, float y, float z, float radius, ushort sections, float red,
            float green, float blue)
     : x(x), y(y), z(z), radius(radius), sections(sections),
-      color{red, green, blue} {
+      color{red, green, blue}, direction((float)(rand() % 360) / 180 * std::numbers::pi) {
 
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
@@ -31,6 +34,29 @@ Ball::Ball(float x, float y, float z, float radius, ushort sections)
 Ball::~Ball() {
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(1, &vbo);
+}
+
+void Ball::tick(float dt) {
+    this->x += cos(direction) * SPEED * dt;
+    this->y += sin(direction) * SPEED * dt;
+}
+
+void Ball::putInBounds() {
+    if(this->y >= 1.0f - radius) {
+        this-> y = 1.0f - radius;
+    }
+    if(this->y <= -1.0f + radius) {
+        this-> y = -1.0f + radius;
+    }
+
+    if(this->x <= -1.0f + radius) {
+        this->x = 0.0f;
+        this->y = 0.0f;
+    }
+    if(this->x >= 1.0f -  radius) {
+        this->x = 0.0f;
+        this->y = 0.0f;
+    }
 }
 
 void Ball::fillVBO() {

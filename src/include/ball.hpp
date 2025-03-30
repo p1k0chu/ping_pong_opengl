@@ -15,7 +15,11 @@ class Ball {
     ushort sections;
     float color[3];
 
+    float direction; // 1 to 360
+
     void render();
+    void tick(float dt);
+    void putInBounds();
 
   private:
     uint vao, vbo;

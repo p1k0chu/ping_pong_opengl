@@ -7,6 +7,8 @@
 #include "game.hpp"
 
 int main() {
+    srand(time(NULL));
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,  4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,  6);
@@ -25,6 +27,7 @@ int main() {
     }
 
     Game game{window};
+    framebuffer_size_callback(window, 1280, 720);
     game.mainLoop();
 }
 
