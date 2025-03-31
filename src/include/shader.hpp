@@ -7,6 +7,9 @@ class Shader {
     Shader();
     ~Shader();
 
+    Shader(Shader& r) = delete;
+    Shader& operator=(Shader& r) = delete;
+
     uint getShaderProgram();
     void use();
   private:

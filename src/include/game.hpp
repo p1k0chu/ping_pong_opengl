@@ -11,6 +11,9 @@ class Game {
     Game(GLFWwindow *window);
     ~Game();
 
+    Game(Game& r) = delete;
+    Game& operator=(Game& r) = delete;
+
     float defaultBackground[3];
 
     void clear();

@@ -4,8 +4,10 @@ class Box {
     public:
         Box(float x, float y, float z, float width, float height, float red, float green, float blue);
         Box(float x, float y, float z, float width, float height);
-
         ~Box();
+
+        Box(Box &r) = delete;
+        Box& operator=(Box &r) = delete;
 
         float x, y, z;
         float width, height;
