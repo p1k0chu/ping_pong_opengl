@@ -43,6 +43,10 @@ void Game::tick(float dt) {
     this->ball.tick(dt);
     this->ball.putInBounds();
 
+    if(boxCollidesWithBall(this->player1, this->ball) || boxCollidesWithBall(this->player2, this->ball)) {
+        this->ball.direction += std::numbers::pi;
+    }
+
     this->shader.use();
 
     this->clear();
@@ -77,4 +81,13 @@ void Game::clear() {
 void framebuffer_size_callback(GLFWwindow *, int width, int height) {
     int size = std::min(width, height);
     glViewport(0, 0, size, size);
+}
+
+bool boxCollidesWithBall(Box &box, Ball &ball) {
+    if ((ball.radius + box.width / 2) > std::abs(box.x - ball.x) &&
+        (ball.radius + box.height / 2) > std::abs(box.y - ball.y)) {
+        return true;
+    }
+
+    return false;
 }

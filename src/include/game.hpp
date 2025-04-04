@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 #include <sys/types.h>
 
-#include "box.hpp"
 #include "ball.hpp"
+#include "box.hpp"
 
 class Game {
   public:
@@ -33,3 +33,4 @@ class Game {
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
+bool boxCollidesWithBall(Box &box, Ball &ball);
