@@ -12,7 +12,7 @@ Game::Game(GLFWwindow *window)
     : defaultBackground{0.0f, 0.0f, 0.0f}, window(window),
       player1(Box(-1.0f, 0.0f, 0.0f, 0.07f, 0.4f)),
       player2(Box(1.0f, 0.0f, 0.0f, 0.07f, 0.4f)),
-      ball(Ball(0.0f, 0.0f, 0.0f, 0.04f, 16)) {
+      ball(Ball(0.0f, 0.0f, 0.0f, 0.04f, 16)), inAction(true) {
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }
@@ -38,13 +38,22 @@ void Game::mainLoop() {
 
 void Game::tick(float dt) {
     this->processInput(dt);
-    this->player1.putInBounds();
-    this->player2.putInBounds();
-    this->ball.tick(dt);
-    this->ball.putInBounds();
 
-    if(boxCollidesWithBall(this->player1, this->ball) || boxCollidesWithBall(this->player2, this->ball)) {
-        this->ball.direction += std::numbers::pi;
+    if (inAction) {
+        this->processPlayerControls(dt);
+        this->player1.putInBounds();
+        this->player2.putInBounds();
+        this->ball.tick(dt);
+        this->ball.putInBounds();
+
+        if (boxCollidesWithBall(this->player1, this->ball) ||
+            boxCollidesWithBall(this->player2, this->ball)) {
+            this->ball.direction += std::numbers::pi;
+        }
+
+        if (this->checkGameEnd()) {
+            this->inAction = false;
+        }
     }
 
     this->shader.use();
@@ -58,10 +67,24 @@ void Game::tick(float dt) {
     glfwPollEvents();
 }
 
+bool Game::checkGameEnd() {
+    if (ball.x <= -1.0f + ball.radius) {
+        return true;
+    }
+    if (ball.x >= 1.0f - ball.radius) {
+        return true;
+    }
+
+    return false;
+}
+
 void Game::processInput(float dt) {
     if (glfwGetKey(this->window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(this->window, true);
     }
+}
+
+void Game::processPlayerControls(float dt) {
     if (glfwGetKey(this->window, GLFW_KEY_W) == GLFW_PRESS) {
         this->player1.y += 1 * dt;
     }

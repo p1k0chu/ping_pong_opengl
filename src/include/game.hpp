@@ -21,6 +21,8 @@ class Game {
     void tick(float dt);
     void mainLoop();
     void processInput(float dt);
+    void processPlayerControls(float dt);
+    bool checkGameEnd();
 
   private:
     GLFWwindow *window;
@@ -29,6 +31,8 @@ class Game {
     Box player1;
     Box player2;
     Ball ball;
+
+    bool inAction;
 };
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);

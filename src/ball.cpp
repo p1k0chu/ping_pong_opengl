@@ -49,14 +49,6 @@ void Ball::putInBounds() {
         this-> y = -1.0f + radius;
     }
 
-    if(this->x <= -1.0f + radius) {
-        this->x = 0.0f;
-        this->y = 0.0f;
-    }
-    if(this->x >= 1.0f -  radius) {
-        this->x = 0.0f;
-        this->y = 0.0f;
-    }
 }
 
 void Ball::fillVBO() {
